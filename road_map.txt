@@ -30,7 +30,7 @@ https://whimsical.com/minishell-architecture-big-picture-7b9N8PL3qHrddbs977mQ2J
 
 
 Norme ANSI:
-http://obligement.free.fr/articles/c_ansi.php
+https://cyber.gouv.fr/sites/default/files/2020/07/anssi-guide-regles_de_programmation_pour_le_developpement_securise_de_logiciels_en_langage_c-v1.4.pdf
 
 Garbage Collector: Pas sur de savoir si je veux en faire un
 https://maplant.com/2020-04-25-Writing-a-Simple-Garbage-Collector-in-C.html
