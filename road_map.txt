@@ -1,0 +1,43 @@
+pipex ressources:
+
+Youtube playlist of CodeVault explaining important notions we encounter in the projet (and more):
+https://www.youtube.com/watch?v=QD9YKSg3wCc&list=PLK4FY1IoDcHG-jUt93Cl7n7XLQDZ0q7Tv
+
+https://reactive.so/post/42-a-comprehensive-guide-to-pipex/
+https://csnotes.medium.com/pipex-tutorial-42-project-4469f5dd5901
+https://medium.com/@omimouni33/pipex-the-42-project-understanding-pipelines-in-c-71984b3f2103
+
+https://www.codequoi.com/pipe-une-methode-de-communication-inter-processus/
+https://www.codequoi.com/errno-et-la-gestion-derreur-en-c/
+https://www.codequoi.com/creer-et-tuer-des-processus-fils-en-c/
+
+
+Partie bonus:
+https://linuxize.com/post/bash-heredoc/
+https://phoenixnap.com/kb/bash-heredoc
+
+https://explainshell.com/explain?cmd=cat+%7C+cat+%7C+ls <<< faire joujou avec ca
+
+https://www.youtube.com/watch?v=yTR00r8vBH8
+
+
+Recuperer valeur du bon enfant -> waitpid
+
+
+Minishell:
+https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+https://whimsical.com/minishell-architecture-big-picture-7b9N8PL3qHrddbs977mQ2J
+
+
+Norme ANSI:
+http://obligement.free.fr/articles/c_ansi.php
+
+Garbage Collector: Pas sur de savoir si je veux en faire un
+https://maplant.com/2020-04-25-Writing-a-Simple-Garbage-Collector-in-C.html
+https://github.com/ivmai/bdwgc
+
+
+Quelques rendus avec erreurs (voir les pushs invalidés):
+https://projects.intra.42.fr/1331/aascedu
+https://projects.intra.42.fr/projects/42cursus-minishell/projects_users/3658701
+https://projects.intra.42.fr/projects/42cursus-minishell/projects_users/3676106
