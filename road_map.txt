@@ -41,3 +41,5 @@ Quelques rendus avec erreurs (voir les pushs invalidés):
 https://projects.intra.42.fr/1331/aascedu
 https://projects.intra.42.fr/projects/42cursus-minishell/projects_users/3658701
 https://projects.intra.42.fr/projects/42cursus-minishell/projects_users/3676106
+
+http://redsymbol.net/articles/unofficial-bash-strict-mode/
