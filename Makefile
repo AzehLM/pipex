@@ -1,10 +1,6 @@
 NAME	:= pipex
 
-override SRCSDIR	:= srcs/
-
-override SRCS		= $(addprefix $(SRCSDIR), $(addsuffix .c, $(SRC)))
-
-SRC 		= \
+include pipex.mk
 
 BUILD_DIR	:= .obj/
 OBJS 		:= $(patsubst $(SRCSDIR)%.c,$(BUILD_DIR)%.o,$(SRCS))
@@ -34,7 +30,7 @@ libft/libft.a: FORCE
 	@$(MAKE) -C libft
 
 $(BUILD_DIR)%.o: $(SRCSDIR)%.c
-	@$(DIR_DUP)
+	@mkdir -p $(dir $@)
 	@echo "$(CYAN)[Compiling]$(RESETC) $<"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 

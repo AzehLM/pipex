@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2024/12/29 15:32:27 by gueberso         ###   ########.fr       */
+/*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
+/*   Updated: 2024/12/29 15:33:00 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	main(int ac, char **av, char **env)
+void	exit_error(t_exit_code error_code)
 {
-	//int		fd[2];
-	//pid_t	pid;
-	
-	(void) ac;
-	(void) av;
-	(void) env;
-	
-
-	if (ac != 5)
-		exit_error(ERR_LOW_PARAM);
-	else
-	{
-		ft_printf("test\n");
-	}
-	return (110);
+	ft_putendl_fd("Error, wrong usage. Expected:", STDERR_FILENO);
+	ft_putendl_fd("./pipex infile \"cmd1\" \"cmd2\" outfile", STDERR_FILENO);
+	exit(error_code);
 }

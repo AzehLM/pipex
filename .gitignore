@@ -11,7 +11,7 @@ libft.a
 DELETE.c
 
 tmp.c
+test.c
+test2.c
 
-push_swap_visualizer
-push_swap_tester
-checker_linux
+
