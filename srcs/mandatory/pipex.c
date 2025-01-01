@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 17:45:57 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 17:47:59 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	child(char **av, char **env, int *fd)
 	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
 	exec_cmd(av[2], env);
-	ft_printf("6\n");
 }
 
 void	parent(char **av, char **env, int *fd)
@@ -91,9 +90,7 @@ void	parent(char **av, char **env, int *fd)
 	dup2(fd[0], STDIN_FILENO);
 	dup2(outfile, STDOUT_FILENO);
 	close(fd[1]);
-	ft_printf("3\n");
 	exec_cmd(av[3], env);
-	ft_printf("4\n");
 }
 
 int	main(int ac, char **av, char **env)

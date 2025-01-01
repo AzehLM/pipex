@@ -6,11 +6,12 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 17:06:26 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 17:48:07 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <stdbool.h>
 
 void	free_data(char **str)
 {
@@ -59,6 +60,5 @@ void	exit_error(t_exit_code error_code)
 	}
 	else
 		perror("Error");
-	ft_printf("6\n");
 	exit(error_code);
 }
