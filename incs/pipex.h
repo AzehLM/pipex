@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:25:23 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 17:47:21 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 19:35:50 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,23 @@
 
 # include "libft.h"
 # include "get_next_line.h"
+# include "ft_printf.h"
 
 typedef enum e_exit
 {
+	SUCCESS,
 	ERR_ENV,
 	ERR_PARAMETERS,
 	ERR_FD,
 	ERR_PIPE,
-	SUCCESS,
 	ERR_FORK,
 	ERR_MALLOC,
 	ERR_PATHFINDING,
-	ERR_EXECVE
+	ERR_EXECVE,
+	ERR_EMPTY_CMD
 }	t_exit_code;
+
+bool	check_cmd(char *cmd);
 
 void	check_valid_env(char **env);
 void	exit_error(t_exit_code error_code);
