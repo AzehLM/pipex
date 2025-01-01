@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 14:59:00 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 15:05:15 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ int	main(int ac, char **av, char **env)
 	if (ac != 5)
 		exit_error(ERR_PARAMETERS);
 	if (pipe(pid) == -1)
-		strerror("need to check code errors to exit correctly");
+		strerror("need to check code errors to exit correctly"); // not working properly, probably have to switch to perror
 	pid = fork();
 	if (pid == -1)
-		strerror("sane");
-	if (!pid)
+		strerror("same"); // yes you said it : same switch to perror probably
+	if (pid == 0)
 		child(av, env, fd);
 	waitpid(pid, NULL, 0);
 	parent(av, env, fd);
