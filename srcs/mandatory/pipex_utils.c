@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 15:03:05 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 16:10:30 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,53 +30,6 @@ void	free_data(char **str)
 	}
 }
 
-char	*pathfinder(char *cmd, char **env)
-{
-	char	**env_path;
-	char	*cmd_to_exec;
-	char	*partial_path;
-	int		i;
-
-	i = 0;
-	while (strnstr(env[i], "PATH=", 5) == 0)
-		i++;
-	env_path = ft_split(env[i] + 5, ':');
-	i = 0;
-	while (env_path[i])
-	{
-		partial_path = ft_strjoin(env_path[i], "/");
-		cmd_to_exec = ft_strjoin(partial_path, cmd);
-		free(partial_path);
-		if (access(cmd_to_exec, F_OK | X_OK) == 0)
-			return (cmd_to_exec);
-		free(cmd_to_exec);
-		i++;
-	}
-	free_data(env_path);
-	return (0);
-}
-
-void	exec_cmd(char *av, char **env)
-{
-	char	**cmd;
-	char	*path;
-
-	cmd = ft_split(av, ' ');
-	path = pathfinder(cmd[0], env);
-	if (path == 0)
-	{
-		free_data(cmd);
-		free(path);
-		//exit properly; error code for pathfinder returned 0
-	}
-	if (execve(path, cmd, env) == -1)
-	{
-		free_data(cmd);
-		free(path);
-		//exit properly;
-	}
-
-}
 void	check_valid_env(char **env)
 {
 	static int	i = 0;
@@ -87,7 +40,7 @@ void	check_valid_env(char **env)
 		if (ft_strnstr(env[i], "PATH=", 5) && env[i][6])
 		{
 			check = true;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -104,7 +57,7 @@ void	exit_error(t_exit_code error_code)
 		ft_putendl_fd("Error, wrong usage. Expected:", STDERR_FILENO);
 		ft_putendl_fd("./pipex fd1 \"cmd1\" \"cmd2\" fd2", STDERR_FILENO);
 	}
-	else if (error_code == 3)
-		ft_putendl_fd("Error, invalid fd", STDERR_FILENO);
+	else
+		perror("Error");
 	exit(error_code);
 }

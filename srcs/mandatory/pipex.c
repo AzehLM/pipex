@@ -6,11 +6,61 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 15:05:15 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 16:28:16 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <sys/types.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+
+char	*pathfinder(char *cmd, char **env)
+{
+	char	**env_path;
+	char	*cmd_to_exec;
+	char	*partial_path;
+	int		i;
+
+	i = 0;
+	while (ft_strnstr(env[i], "PATH=", 5) == 0)
+		i++;
+	env_path = ft_split(env[i] + 5, ':');
+	i = 0;
+	while (env_path[i])
+	{
+		partial_path = ft_strjoin(env_path[i], "/");
+		cmd_to_exec = ft_strjoin(partial_path, cmd);
+		free(partial_path);
+		if (access(cmd_to_exec, F_OK | X_OK) == 0)
+			return (cmd_to_exec);
+		free(cmd_to_exec);
+		i++;
+	}
+	free_data(env_path);
+	return (0);
+}
+
+void	exec_cmd(char *av, char **env)
+{
+	char	**cmd;
+	char	*path;
+
+	cmd = ft_split(av, ' ');
+	path = pathfinder(cmd[0], env);
+	if (path == 0)
+	{
+		free_data(cmd);
+		free(path);
+		exit_error(ERR_PATHFINDING);
+	}
+	if (execve(path, cmd, env) == -1)
+	{
+		free_data(cmd);
+		free(path);
+		exit_error(ERR_EXECVE);
+	}
+}
 
 void	child(char **av, char **env, int *fd)
 {
@@ -18,10 +68,7 @@ void	child(char **av, char **env, int *fd)
 
 	infile = open(av[1], O_RDONLY, 0777);
 	if (infile == -1)
-	{
-		perror("Error");
-		exit(ERR_FD);
-	}
+		exit_error(ERR_FD);
 	dup2(fd[1], STDOUT_FILENO);
 	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
@@ -34,10 +81,7 @@ void	parent(char **av, char **env, int *fd)
 
 	outfile = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (outfile == -1)
-	{
-		perror("Error");
-		exit(ERR_FD);
-	}
+		exit_error(ERR_FD);
 	dup2(fd[0], STDIN_FILENO);
 	dup2(outfile, STDOUT_FILENO);
 	close(fd[1]);
@@ -52,14 +96,14 @@ int	main(int ac, char **av, char **env)
 	check_valid_env(env);
 	if (ac != 5)
 		exit_error(ERR_PARAMETERS);
-	if (pipe(pid) == -1)
-		strerror("need to check code errors to exit correctly"); // not working properly, probably have to switch to perror
+	if (pipe(fd) == -1)
+		exit_error(ERR_PIPE);
 	pid = fork();
 	if (pid == -1)
-		strerror("same"); // yes you said it : same switch to perror probably
+		exit_error(ERR_FORK);
 	if (pid == 0)
 		child(av, env, fd);
-	waitpid(pid, NULL, 0);
 	parent(av, env, fd);
+	waitpid(pid, NULL, 0);
 	return (SUCCESS);
 }
