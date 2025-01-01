@@ -47,16 +47,6 @@ L'objectif est de comprendre les processus dans leur ensemble et non seulement p
 - [POSIX : unistd.h](https://pubs.opengroup.org/onlinepubs/7908799/xsh/unistd.h.html)
 - [POSIX : tcgetpgrp](https://pubs.opengroup.org/onlinepubs/7908799/xsh/tcgetpgrp.html)
 
----
-## Infodump
-
-Récupérer la valeur du bon enfant avec `waitpid`
-
- [Tutoriel sur les compilateurs](https://ruslanspivak.com/lsbasi-part1/)
-
-##### Norme ANSI
-- [Guide des règles de programmation sécurisées en C (ANSSI)](https://cyber.gouv.fr/sites/default/files/2020/07/anssi-guide-regles_de_programmation_pour_le_developpement_securise_de_logiciels_en_langage_c-v1.4.pdf)
-
 
 ---
 ## Fonctions `dup()` et `dup2()`
@@ -74,7 +64,7 @@ Récupérer la valeur du bon enfant avec `waitpid`
 - `dup2()` est préférable pour Pipex, car il permet de contrôler les redirections des entrées/sorties (`STDIN_FILENO` ou `STDOUT_FILENO`).
 
 #### Analogie :
-- `dup()` est comme avoir une seule clé pour une serrure, alors que `dup2()` permet d'avoir deux clés (et on peut choisir où elles vont).
+- `dup()` est comme avoir une seule clé pour une serrure, alors que `dup2()` permet d'avoir deux clés (lorsque l'on en jete une, on peut toujours utiliser la deuxième).
 
 ---
 
@@ -119,7 +109,37 @@ Lorsqu'un processus est exécuté par l'OS, il possède une "image" en mémoire.
 - `execve()` permet d'exécuter un autre programme dans le même processus, tout en conservant certaines ressources (si configurées pour persister).
 
 ---
+### Pieges a eviter
+#### Utilisation successive de sleep :
+- `./pipex infile "sleep 5" "sleep 4" outfile `
+  
+##### On pourrait s'attendre a ce que le programme sorte apres avoir executer les deux sleep l'un apres l'autre. Cependant `fork` ne fonctionne pas de cette facon, tous les processus s'execute en meme temps.
 
+Ici notre programme doit sortir apres 5 secondes. (cela aurait aussi ete le cas avec `./pipex infile "sleep 3" "sleep 5" outfile`)
+
+#### Commandes vides
+- `./pipex infile "" " " outfile`
+
+
+Risque de segfault dans les process si ce cas n'est pas geré, `execve` est probablement la source du probleme.
+Solution : check isspace jusqu'a ce qu'on tombe sur un autre charactère, a partir de la nos fonctions `get_path` et `exec` prennent le relai. 
+
+---
+
+## Check leak
+
+Etant donner la nature du projet, une mauvaise utilisation de `valgrind` ou de `fsanitize` ralentirai la detection de leaks. 
+
+### Solution
+
+Plusieurs options:
+- avec `valgrind` : utiliser les options ``--leak-check=full --trace-children=yes --track-origins=yes` en compilant avec `-g3`
+- avec `fsanitize` : compiler avec `-g -fsanitize=address`
+
+Neanmoins, l'utilisation d'`execve` pertube la detection de leaks puisque les images des processus sont redefinis.
+Bien penser a mettre en commentaire les parties ou `execve` est utilisé.
+
+---
 ## Minishell
 
 ### Qu'est-ce que Minishell ?
@@ -140,3 +160,21 @@ Lorsqu'un processus est exécuté par l'OS, il possède une "image" en mémoire.
 Pas sûr si c'est nécessaire pour le projet, mais voici quelques ressources :
 - [Écrire un simple Garbage Collector en C](https://maplant.com/2020-04-25-Writing-a-Simple-Garbage-Collector-in-C.html)
 - [BDWGC : Garbage Collector pour C](https://github.com/ivmai/bdwgc)
+
+--- 
+
+### List symbols from object files `nm`
+Option `-u` utile pour voir la liste des symboles.
+- GNU extension affiche une seule fois chaque symbole de chaque type en cours d'utilisation
+
+ 
+ ---
+## Infodump
+
+Récupérer la valeur du bon enfant avec `waitpid`
+
+ [Tutoriel sur les compilateurs](https://ruslanspivak.com/lsbasi-part1/)
+
+##### Norme ANSI
+- [Guide des règles de programmation sécurisées en C (ANSSI)](https://cyber.gouv.fr/sites/default/files/2020/07/anssi-guide-regles_de_programmation_pour_le_developpement_securise_de_logiciels_en_langage_c-v1.4.pdf)
+
