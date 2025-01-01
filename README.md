@@ -133,7 +133,7 @@ Etant donner la nature du projet, une mauvaise utilisation de `valgrind` ou de `
 ### Solution
 
 Plusieurs options:
-- avec `valgrind` : utiliser les options ``--leak-check=full --trace-children=yes --track-origins=yes` en compilant avec `-g3`
+- avec `valgrind` : utiliser les options `--leak-check=full --trace-children=yes --track-origins=yes` en compilant avec `-g3`
 - avec `fsanitize` : compiler avec `-g -fsanitize=address`
 
 Neanmoins, l'utilisation d'`execve` pertube la detection de leaks puisque les images des processus sont redefinis.
