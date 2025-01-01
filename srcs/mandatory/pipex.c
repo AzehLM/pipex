@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 14:57:17 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 14:59:00 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,32 @@
 
 void	child(char **av, char **env, int *fd)
 {
-	int	fd1;
+	int	infile;
 
-	fd1 = open(av[1], O_RDONLY, 0777);
-	if (fd1 == -1)
+	infile = open(av[1], O_RDONLY, 0777);
+	if (infile == -1)
 	{
 		perror("Error");
 		exit(ERR_FD);
 	}
 	dup2(fd[1], STDOUT_FILENO);
-	dup2(fd1, STDIN_FILENO);
+	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
 	exec_cmd(av[2], env);
 }
 
 void	parent(char **av, char **env, int *fd)
 {
-	int	fd2;
+	int	outfile;
 
-	fd2 = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (fd2 == -1)
+	outfile = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (outfile == -1)
 	{
 		perror("Error");
 		exit(ERR_FD);
 	}
 	dup2(fd[0], STDIN_FILENO);
-	dup2(fd2, STDOUT_FILENO);
+	dup2(outfile, STDOUT_FILENO);
 	close(fd[1]);
 	exec_cmd(av[3], env);
 }
@@ -59,7 +59,7 @@ int	main(int ac, char **av, char **env)
 		strerror("sane");
 	if (!pid)
 		child(av, env, fd);
-	waitpid(pid, NULL, 0)l
+	waitpid(pid, NULL, 0);
 	parent(av, env, fd);
-	return (0);
+	return (SUCCESS);
 }

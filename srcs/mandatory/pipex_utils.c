@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 14:53:38 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 15:03:05 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*pathfinder(char *cmd, char **env)
 		i++;
 	}
 	free_data(env_path);
+	return (0);
 }
 
 void	exec_cmd(char *av, char **env)
@@ -66,7 +67,7 @@ void	exec_cmd(char *av, char **env)
 	{
 		free_data(cmd);
 		free(path);
-		//exit properly;
+		//exit properly; error code for pathfinder returned 0
 	}
 	if (execve(path, cmd, env) == -1)
 	{
@@ -104,6 +105,6 @@ void	exit_error(t_exit_code error_code)
 		ft_putendl_fd("./pipex fd1 \"cmd1\" \"cmd2\" fd2", STDERR_FILENO);
 	}
 	else if (error_code == 3)
-		ft_putendl_fd("Error, invalid fd", )
+		ft_putendl_fd("Error, invalid fd", STDERR_FILENO);
 	exit(error_code);
 }
