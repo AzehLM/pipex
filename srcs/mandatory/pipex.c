@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 21:52:25 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 23:34:30 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	child(char **av, char **env, int *fd)
 	if (infile == -1)
 	{
 		close(fd[0]);
-		close(fd[1]);
 		exit_error(ERR_FD);
 	}
 	dup2(fd[1], STDOUT_FILENO);
@@ -124,7 +123,7 @@ int	main(int ac, char **av, char **env)
 	if (pid == 0)
 		parent(av, env, fd);
 	close(fd[0]);
-	while (waitpid(-1, &status, 0) > 0)
+	while (waitpid(pid, &status, 0) > 0)
 		if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 			exit(WEXITSTATUS(status));
 	return (SUCCESS);

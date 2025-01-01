@@ -1,0 +1,27 @@
+ERRORS :(
+------------------------------------------------------------------------------------------------------------------------
+TEST 9:
+./pipex "infiles/basic.txt" "sleep 3" "ls" "outfiles/outfile" 
+< infiles/basic.txt sleep 3 | ls > outfiles/outfile_tester
+
+Time:   
+Your execution time: 0
+Orig execution time: 3
+
+------------------------------------------------------------------------------------------------------------------------
+TEST 15:
+./pipex "infiles/basic.txt" "sleep 3" "cat -e" "outfiles/outfile_without_permissions" 
+< infiles/basic.txt sleep 3 | cat -e > outfiles/outfile_without_permissions_tester
+
+Time:   
+Your execution time: 0
+Orig execution time: 3
+
+------------------------------------------------------------------------------------------------------------------------
+TEST 18:
+./pipex "infiles/basic.txt" "cat -e" "nonexistingcommand" "outfiles/outfile" 
+< infiles/basic.txt cat -e | nonexistingcommand > outfiles/outfile_tester
+
+Exit status:
+Your exit status: 1
+Orig exit status: 127

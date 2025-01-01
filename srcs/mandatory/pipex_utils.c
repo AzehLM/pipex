@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 20:49:17 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 22:52:04 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	exit_error(t_exit_code error_code)
 	}
 	else if (error_code > 0 && error_code < 9)
 		perror("Error");
-	exit(error_code);
+	exit(EXIT_FAILURE);
 }
 
 static bool	ft_isspace(char c)
