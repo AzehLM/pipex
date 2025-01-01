@@ -178,3 +178,10 @@ Récupérer la valeur du bon enfant avec `waitpid`
 ##### Norme ANSI
 - [Guide des règles de programmation sécurisées en C (ANSSI)](https://cyber.gouv.fr/sites/default/files/2020/07/anssi-guide-regles_de_programmation_pour_le_developpement_securise_de_logiciels_en_langage_c-v1.4.pdf)
 
+
+---
+
+# TO DO
+
+WIFEXITED explained
+
