@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 16:28:16 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 17:45:57 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,17 @@ char	*pathfinder(char *cmd, char **env)
 	while (ft_strnstr(env[i], "PATH=", 5) == 0)
 		i++;
 	env_path = ft_split(env[i] + 5, ':');
-	i = 0;
-	while (env_path[i])
+	if (!env_path)
+		return (0);
+	i = -1;
+	while (env_path[++i])
 	{
 		partial_path = ft_strjoin(env_path[i], "/");
 		cmd_to_exec = ft_strjoin(partial_path, cmd);
 		free(partial_path);
 		if (access(cmd_to_exec, F_OK | X_OK) == 0)
-			return (cmd_to_exec);
+			return (free(env_path), cmd_to_exec);
 		free(cmd_to_exec);
-		i++;
 	}
 	free_data(env_path);
 	return (0);
@@ -47,6 +48,8 @@ void	exec_cmd(char *av, char **env)
 	char	*path;
 
 	cmd = ft_split(av, ' ');
+	if (!cmd)
+		exit_error(ERR_MALLOC);
 	path = pathfinder(cmd[0], env);
 	if (path == 0)
 	{
@@ -60,6 +63,8 @@ void	exec_cmd(char *av, char **env)
 		free(path);
 		exit_error(ERR_EXECVE);
 	}
+	free(path);
+	free_data(cmd);
 }
 
 void	child(char **av, char **env, int *fd)
@@ -73,6 +78,7 @@ void	child(char **av, char **env, int *fd)
 	dup2(infile, STDIN_FILENO);
 	close(fd[0]);
 	exec_cmd(av[2], env);
+	ft_printf("6\n");
 }
 
 void	parent(char **av, char **env, int *fd)
@@ -85,7 +91,9 @@ void	parent(char **av, char **env, int *fd)
 	dup2(fd[0], STDIN_FILENO);
 	dup2(outfile, STDOUT_FILENO);
 	close(fd[1]);
+	ft_printf("3\n");
 	exec_cmd(av[3], env);
+	ft_printf("4\n");
 }
 
 int	main(int ac, char **av, char **env)
@@ -103,7 +111,7 @@ int	main(int ac, char **av, char **env)
 		exit_error(ERR_FORK);
 	if (pid == 0)
 		child(av, env, fd);
-	parent(av, env, fd);
 	waitpid(pid, NULL, 0);
+	parent(av, env, fd);
 	return (SUCCESS);
 }

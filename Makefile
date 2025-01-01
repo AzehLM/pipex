@@ -7,7 +7,7 @@ OBJS 		:= $(patsubst $(SRCSDIR)%.c,$(BUILD_DIR)%.o,$(SRCS))
 DEPS		:= $(OBJS:.o=.d)
 
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -g3
+CFLAGS		:= -Wall -Wextra -Werror -g -fsanitize=address
 CPPFLAGS	:= -MMD -MP -I incs/ -I libft/incs/
 
 RM			:= rm -f
