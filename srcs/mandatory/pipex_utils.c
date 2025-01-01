@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 19:36:35 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/01 20:49:17 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	exit_error(t_exit_code error_code)
 
 static bool	ft_isspace(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || (c >= 9 && c <= 13));
 }
 
 bool	check_cmd(char *cmd)
@@ -75,7 +75,7 @@ bool	check_cmd(char *cmd)
 	i = 0;
 	while (cmd && cmd[i])
 	{
-		if (!ft_isspace(*cmd))
+		if (!ft_isspace(cmd[i]))
 			return (true);
 		i++;
 	}
