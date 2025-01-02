@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:25:23 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/02 20:35:26 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/02 20:44:56 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include "ft_printf.h"
-
-// # include <string.h>
-// # include <errno.h>
 
 typedef enum e_exit
 {

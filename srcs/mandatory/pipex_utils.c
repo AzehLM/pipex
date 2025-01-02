@@ -6,12 +6,11 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/02 20:35:21 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/02 20:44:08 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <sys/types.h>
 #include <sys/wait.h>
 
 void	free_data(char **str)
