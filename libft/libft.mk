@@ -6,7 +6,7 @@
 #    By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/14 10:09:03 by gueberso          #+#    #+#              #
-#    Updated: 2024/12/20 17:45:19 by gueberso         ###   ########.fr        #
+#    Updated: 2025/01/02 20:33:14 by gueberso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRC += $(addprefix $(INTDIR), $(addsuffix .c, $(INTSRC)))
 
 override INTSRC := \
 	ft_atoi \
+	ft_isspace \
 	ft_itoa \
 
 SRC += $(addprefix $(LISTDIR), $(addsuffix .c, $(LISTSRC)))

@@ -142,6 +142,8 @@ Bien penser a mettre en commentaire les parties ou `execve` est utilisé.
 ---
 ## Minishell
 
+- [Minishell guide](https://github.com/AudeizReading/42-cursus/tree/main/01-2021-03-2023-05-tronc-commun/08-minishell)
+---
 ### Qu'est-ce que Minishell ?
 - [Vidéo YouTube : Introduction à Minishell](https://www.youtube.com/watch?v=yTR00r8vBH8)
 - [Documentation sur la création d'un shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)

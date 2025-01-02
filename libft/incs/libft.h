@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 13:44:14 by gueberso          #+#    #+#             */
-/*   Updated: 2024/11/11 23:31:14 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/02 20:32:43 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <stdint.h>
+# include <stdbool.h>
 
 # define SIZE_MAX_SQRT 4294967295
 
@@ -30,6 +31,8 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
+
+bool	ft_isspace(char c);
 
 /*	----------- void_functions ---------------------------------------------- */
 

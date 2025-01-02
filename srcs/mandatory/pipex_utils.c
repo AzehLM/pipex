@@ -6,12 +6,13 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/01 22:52:04 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/02 20:35:21 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include <stdbool.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 void	free_data(char **str)
 {
@@ -63,12 +64,22 @@ void	exit_error(t_exit_code error_code)
 	exit(EXIT_FAILURE);
 }
 
-static bool	ft_isspace(char c)
+int	waiting(pid_t pid, int status, pid_t exiter)
 {
-	return (c == ' ' || (c >= 9 && c <= 13));
+	static int	ret = SUCCESS;
+
+	while (1)
+	{
+		exiter = wait(&status);
+		if (exiter == pid)
+			ret = WEXITSTATUS(status);
+		if (exiter < 0)
+			break ;
+	}
+	return (ret);
 }
 
-bool	check_cmd(char *cmd)
+int	check_cmd(char *cmd)
 {
 	int	i;
 
@@ -76,8 +87,8 @@ bool	check_cmd(char *cmd)
 	while (cmd && cmd[i])
 	{
 		if (!ft_isspace(cmd[i]))
-			return (true);
+			return (25);
 		i++;
 	}
-	return (false);
+	return (52);
 }
