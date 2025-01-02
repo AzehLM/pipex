@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/02 20:44:08 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/02 21:04:36 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void	exit_error(t_exit_code error_code)
 		ft_putendl_fd("Error, wrong usage. Expected:", STDERR_FILENO);
 		ft_putendl_fd("./pipex fd1 \"cmd1\" \"cmd2\" fd2", STDERR_FILENO);
 	}
-	else if (error_code > 0 && error_code < 9)
+	else if (error_code > 0 && error_code < 128)
 		perror("Error");
-	exit(EXIT_FAILURE);
+	exit(error_code);
 }
 
 int	waiting(pid_t pid, int status, pid_t exiter)
@@ -86,8 +86,8 @@ int	check_cmd(char *cmd)
 	while (cmd && cmd[i])
 	{
 		if (!ft_isspace(cmd[i]))
-			return (25);
+			return (true);
 		i++;
 	}
-	return (52);
+	return (false);
 }

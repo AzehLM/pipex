@@ -6,14 +6,13 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/02 20:41:54 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/02 21:07:07 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include <fcntl.h>
 #include <sys/types.h>
-
 
 char	*pathfinder(char *cmd, char **env)
 {
