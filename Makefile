@@ -4,7 +4,9 @@ include pipex.mk
 
 BUILD_DIR	:= .obj/
 OBJS 		:= $(patsubst $(SRCSDIR)%.c,$(BUILD_DIR)%.o,$(SRCS))
+OBJSB		:= $(patsubst $(SRCSDIR)%.c,$(BUILD_DIR)%.o,$(SRCSBONUS))	
 DEPS		:= $(OBJS:.o=.d)
+DEPSB		:= $(OBJSB:.o=.d)
 
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror
@@ -18,6 +20,7 @@ DIR_DUP		= mkdir -p $(BUILD_DIR)
 .DEFAULT_GOAL	:= all
 
 -include $(DEPS)
+-include $(DEPSB)
 
 .PHONY: all
 all: $(NAME)
@@ -30,6 +33,19 @@ libft/libft.a: FORCE
 	@$(MAKE) -C libft
 
 $(BUILD_DIR)%.o: $(SRCSDIR)%.c
+	@mkdir -p $(dir $@)
+	@echo "$(CYAN)[Compiling]$(RESETC) $<"
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+.PHONY: bonus
+bonus: .bonus
+
+.bonus: libft/libft.a $(OBJSB)
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJSB) -L libft -lft
+	@echo "\n$(GREEN_BOLD)✓ $(NAME) is ready$(RESETC)"
+	@touch .bonus
+
+$(BUILD_DIR)bonus/%.o: $(SRCSDIR)bonus/%.c
 	@mkdir -p $(dir $@)
 	@echo "$(CYAN)[Compiling]$(RESETC) $<"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
@@ -53,6 +69,30 @@ re: fclean all
 FORCE:
 
 .SILENT: clean fclean
+
+# ********** valgrind and fsanitize flags ************************************ #
+
+.PHONY: asan
+asan: CFLAGS += -fsanitize=address -g
+asan: re
+	@echo "$(GREEN_BOLD)✓ $(NAME) is compiled with AddressSanitizer$(RESETC)"
+
+.PHONY: valgrind
+valgrind: CFLAGS += -g3
+valgrind: re
+	@echo "$(GREEN_BOLD)✓ $(NAME) is compiled with debug symbols for valgrind$(RESETC)"
+
+.PHONY: asanb
+asanb: CFLAGS += -fsanitize=address -g
+asanb: bonus
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJSB) -L libft -lft
+	@echo "$(GREEN_BOLD)✓ $(NAME) bonus is compiled with AddressSanitizer$(RESETC)"
+
+.PHONY: valgrindb
+valgrindb: CFLAGS += -g3
+valgrindb: bonus
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJSB) -L libft -lft
+	@echo "$(GREEN_BOLD)✓ $(NAME) bonus is compiled with debug symbols for valgrind$(RESETC)"
 
 # ********** COLORS AND BACKGROUND COLORS ************************************ #
 

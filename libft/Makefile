@@ -26,6 +26,7 @@ DIR_DUP		= mkdir -p $(BUILD_DIR)
 
 -include $(DEPS)
 
+.PHONY: all
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -37,16 +38,25 @@ $(BUILD_DIR)%.o: $(SRCSDIR)%.c
 	@echo "$(CYAN)[Compiling]$(RESETC) $<"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
+.PHONY: clean
 clean:
 	@$(RM) $(OBJS) $(DEPS)
 
+.PHONY: fclean
 fclean: clean
 	$(RM) $(RMDIR) $(NAME) $(BUILD_DIR)
 	@echo "$(RED_BOLD)✓ libft is fully cleaned!$(RESETC)"
 
+.PHONY: re
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: asan
+asan: CFLAGS += -fsanitize=address -g
+asan: re
+
+.PHONY: valgrind
+valgrind: CFLAGS += -g3
+valgrind: re
 
 .SILENT: clean fclean
 
