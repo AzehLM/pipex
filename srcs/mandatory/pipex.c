@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/03 12:56:08 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/03 13:08:37 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,11 @@ void	parent(char **av, char **env, int *fd)
 	}
 	if (dup2(outfile, STDOUT_FILENO) == -1)
 	{
-		close (outfile);
+		close (fd[0]);
 		return ;
 	}
 	close(fd[1]);
-	close(outfile);
+	close(fd[0]);
 	if (!av[3] || !check_cmd(av[3]))
 		exit_error(ERR_EMPTY_CMD);
 	exec_cmd(av[3], env);
