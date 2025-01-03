@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/03 14:06:37 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/03 16:06:34 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,6 @@ void	parent(char **av, char **env, int *fd)
 		exit_error(ERR_EMPTY_CMD);
 	exec_cmd(av[3], env);
 }
-
-
-#include <string.h>
 
 int	main(int ac, char **av, char **env)
 {
