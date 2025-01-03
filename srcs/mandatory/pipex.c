@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/02 21:07:07 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/03 12:56:08 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,16 @@ void	child(char **av, char **env, int *fd)
 	infile = open(av[1], O_RDONLY, 0777);
 	if (infile == -1)
 		exit_error(ERR_FD);
-	dup2(fd[1], STDOUT_FILENO);
-	dup2(infile, STDIN_FILENO);
+	if (dup2(fd[1], STDOUT_FILENO) == -1)
+	{
+		close(fd[1]);
+		return ;
+	}
+	if (dup2(infile, STDIN_FILENO) == -1)
+	{
+		close (infile);
+		return ;
+	}
 	close(fd[1]);
 	close(infile);
 	if (!av[2] || !check_cmd(av[2]))
@@ -90,10 +98,18 @@ void	parent(char **av, char **env, int *fd)
 	outfile = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (outfile == -1)
 		exit_error(ERR_FD);
-	dup2(fd[0], STDIN_FILENO);
-	dup2(outfile, STDOUT_FILENO);
+	if (dup2(fd[0], STDIN_FILENO) == -1)
+	{
+		close (fd[0]);
+		return ;
+	}
+	if (dup2(outfile, STDOUT_FILENO) == -1)
+	{
+		close (outfile);
+		return ;
+	}
 	close(fd[1]);
-	close(fd[0]);
+	close(outfile);
 	if (!av[3] || !check_cmd(av[3]))
 		exit_error(ERR_EMPTY_CMD);
 	exec_cmd(av[3], env);
