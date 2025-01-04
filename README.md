@@ -1,5 +1,23 @@
 # Ressources pour le projet Pipex (42)
 
+# Table des matières
+1. [Références YouTube](#références-youtube)
+2. [Ressources globales C](#ressources-globales-c)
+3. [Outils interactifs](#outils-interactifs)
+4. [Ressources spécifiques au projet Pipex](#ressources-spécifiques-au-projet-pipex)
+5. [Le type pid_t](#le-type-pid_t)
+6. [Fonctions dup() et dup2()](#fonctions-dup-et-dup2)
+7. [Fonction access()](#fonction-access)
+8. [Fonction execve()](#fonction-execve)
+9. [Comprendre l'image d'un processus](#comprendre-limage-dun-processus)
+10. [Pipe et pourquoi close les fds](#pipe-et-pourquoi-close-les-fds)
+11. [Pièges à éviter](#pieges-à-éviter)
+12. [Check leak](#check-leak)
+13. [Minishell](#minishell)
+14. [Autres ressources](#autres-ressources)
+15. [Infodump](#infodump)
+16. [TO DO](#to-do)
+
 ## References YouTube
 - [CodeVault Playlist (Notions importantes pour le projet et plus)](https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY)
 - [Autre vidéo sur les pipelines](https://www.youtube.com/watch?v=QD9YKSg3wCc&list=PLK4FY1IoDcHG-jUt93Cl7n7XLQDZ0q7Tv)
@@ -109,11 +127,52 @@ Lorsqu'un processus est exécuté par l'OS, il possède une "image" en mémoire.
 - `execve()` permet d'exécuter un autre programme dans le même processus, tout en conservant certaines ressources (si configurées pour persister).
 
 ---
+
+## Pipe et pourquoi close les fds
+### `pipe()`
+- [Manpage `pipe()`](https://linux.die.net/man/2/pipe)
+- La fonction `pipe()` crée un pipeline (buffer, voir suite) de communication unidirectionnel entre processus.
+#### Data flow : `write end -> buffer -> read end` 
+
+#### Pourquoi fermer tous les fd ?
+- Fuites de ressources
+- Comportement inattendu des pipes (blocage dans les pipe)
+
+Chaque fois qu'un pipe est créé avec la fonction `pipe(fd)`, il ouvre deux fd:
+- `fd[0]` pour la lecture (read end)
+- `fd[1]` pour l'écriture (write end)
+
+Si ces descripteurs ne sont pas fermés:
+- Ils restent ouverts dans le processus et consomment une ressource système
+- Avec plusieurs pipelines, on peut attendre la limite maximale du nombre de fd ouverts par un processus (entrainant `EMFILE` (``"Too many open files"``))
+  
+#### Un `pipe` est un canal de communication entre deux processus:
+- Si un processus tente de lire un pipe, mais aucun autre processus n'écrit dans ce pipe (car `fd[1]` est ouvert), le processus lecteur peut se bloquer en attente de donnée
+- Un processus écrivant dans un pipe peut se bloquer si le lecteur ne lit pas les données et que le buffer du pipe est plein.
+
+## Buffer d'un pipe
+Le buffer d'un pipe est une zone de mémoire temporaire qui sert à stocker les données en transit entre le processus qui écrit et le processus qui lit.
+Quelques spécificités de ce buffer:
+- A une taille limite (64KB (``65536 bytes``))
+- En réalité selon l'OS: taille définit par `PIPE_BUF` (`<limits.h>`)
+#### Ce comporte de telle manière:
+Quand le buffer est plein:
+- Le `write()` se bloque en attendant qu'il y ait de la place
+- Ou renvoie une erreur si le pipe est non-bloquant (`O_NONBLOCK`)
+Quand le buffer est vide:
+- Le `read()` se bloque en attendant des données
+- Ou renvoie -1 si le write end (`fd[1]`)est fermé
+
+#### NE PAS CONFONDRE BUFFER ET IMAGE
+Ce sont bien deux choses différentes avec des données différentes.
+
+---
+
 ### Pieges a eviter
 #### Utilisation successive de sleep :
 - `./pipex infile "sleep 5" "sleep 4" outfile `
   
-##### On pourrait s'attendre a ce que le programme sorte apres avoir executer les deux sleep l'un apres l'autre. Cependant `fork` ne fonctionne pas de cette facon, tous les processus s'execute en meme temps.
+#### On pourrait s'attendre a ce que le programme sorte apres avoir executer les deux sleep l'un apres l'autre. Cependant `fork` ne fonctionne pas de cette facon, tous les processus s'execute en meme temps.
 
 Ici notre programme doit sortir apres 5 secondes. (cela aurait aussi ete le cas avec `./pipex infile "sleep 3" "sleep 5" outfile`)
 
@@ -186,4 +245,3 @@ Récupérer la valeur du bon enfant avec `waitpid`
 # TO DO
 
 WIFEXITED explained
-

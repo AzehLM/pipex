@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:33:03 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/03 16:06:34 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/04 11:07:22 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	exec_cmd(char *av, char **env)
 	path = pathfinder(cmd[0], env);
 	if (path == 0)
 	{
-		free_data(cmd);
 		free(path);
+		free_data(cmd);
 		exit_error(ERR_PATHFINDING);
 	}
 	if (execve(path, cmd, env) == -1)
