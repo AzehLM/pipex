@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 00:32:49 by gueberso          #+#    #+#             */
-/*   Updated: 2024/11/11 23:37:53 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/04 14:45:06 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 int	ft_atoi(const char *nptr)
 {
+	unsigned long	res;
 	int				i;
 	int				sign;
-	unsigned long	res;
 
 	i = 0;
 	res = 0;

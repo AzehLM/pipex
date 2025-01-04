@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:35:44 by gueberso          #+#    #+#             */
-/*   Updated: 2024/11/10 13:14:50 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/04 14:45:12 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static size_t	ft_len(int n)
 
 char	*ft_itoa(int n)
 {
+	unsigned long	nb;
 	size_t			len;
 	char			*res;
-	unsigned long	nb;
 
 	len = ft_len(n);
 	res = ft_calloc(len + 1, sizeof(char));
