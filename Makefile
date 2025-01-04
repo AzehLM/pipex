@@ -53,13 +53,13 @@ $(BUILD_DIR)bonus/%.o: $(SRCSDIR)bonus/%.c
 .PHONY: clean
 clean:
 	@$(MAKE) clean -C libft/
-	@$(RM) $(OBJS) $(DEPS)
+	@$(RM) $(OBJS) $(DEPS) .bonus
 	@echo "$(RED_BOLD)[Cleaning]$(RESETC)"
 
 .PHONY: fclean
 fclean: clean
 	@$(MAKE) fclean -C libft/
-	$(RM) $(RMDIR) $(NAME) $(BUILD_DIR)
+	$(RM) $(RMDIR) $(NAME) $(BUILD_DIR) 
 	@echo "$(RED_BOLD)✓ push_swap is fully cleaned!$(RESETC)"
 
 .PHONY: re
