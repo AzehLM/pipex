@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:25:23 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/02 21:06:57 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/04 22:41:41 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef enum e_exit
 }	t_exit_code;
 
 int		check_cmd(char *cmd);
-int		waiting(pid_t pid, int status, pid_t exiter);
+int		waiting(pid_t pid, pid_t exiter, int status);
 
 void	check_valid_env(char **env);
 void	exit_error(t_exit_code error_code);
