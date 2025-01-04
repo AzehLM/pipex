@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:40:00 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/04 14:51:11 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/04 22:31:36 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*read_file(int fd, char *buffer, int bytes_read)
 			break ;
 		temp[bytes_read] = '\0';
 		old_buffer = buffer;
-		buffer = ft_strjoin(buffer, temp);
+		buffer = ft_strjoin_gnl(buffer, temp);
 		if (!buffer)
 			return (NULL);
 		free(old_buffer);

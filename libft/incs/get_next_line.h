@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:41:27 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/02 20:44:36 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/04 22:31:15 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 size_t	ft_strlen_gnl(const char *str);
 
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(const char *s1, const char *s2);
+char	*ft_strjoin_gnl(const char *s1, const char *s2);
 char	*ft_substr_secured(char const *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
 

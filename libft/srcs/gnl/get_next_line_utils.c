@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 19:40:45 by gueberso          #+#    #+#             */
-/*   Updated: 2024/12/22 15:12:40 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/04 22:31:27 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_strdup_secured(const char *str)
 	return (dup);
 }
 
-char	*ft_strjoin(const char *s1, const char *s2)
+char	*ft_strjoin_gnl(const char *s1, const char *s2)
 {
 	ssize_t	len_s1;
 	char	*res;
