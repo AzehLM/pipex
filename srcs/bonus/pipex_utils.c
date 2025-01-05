@@ -6,11 +6,11 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/02 21:04:36 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/05 00:58:41 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 #include <sys/wait.h>
 
 void	free_data(char **str)
@@ -58,12 +58,19 @@ void	exit_error(t_exit_code error_code)
 		ft_putendl_fd("Error, wrong usage. Expected:", STDERR_FILENO);
 		ft_putendl_fd("./pipex fd1 \"cmd1\" \"cmd2\" fd2", STDERR_FILENO);
 	}
-	else if (error_code > 0 && error_code < 128)
+	else if (error_code == 3)
+	{
+		ft_putendl_fd("Error, wrong usage of here_doc. Expected:", \
+			STDERR_FILENO);
+		ft_putendl_fd("./pipex here_doc LIMITER cmd1 cmd2 ... cmdn outfile", \
+			STDERR_FILENO);
+	}
+	else if (error_code >= 4 && error_code < 128)
 		perror("Error");
 	exit(error_code);
 }
 
-int	waiting(pid_t pid, int status, pid_t exiter)
+int	waiting(pid_t pid, pid_t exiter, int status)
 {
 	static int	ret = SUCCESS;
 
