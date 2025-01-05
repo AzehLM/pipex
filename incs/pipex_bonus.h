@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 22:36:51 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/05 00:39:26 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/05 02:50:56 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_pipex
 	int		cmd_start;
 	int		pipe_counter;
 	int		*pipe_fds;
+	int		*pid; // ?? allocation ou fermeture a chaque utilisation ?
 	int		infile;
 	int		outfile;
 	int		ac;
