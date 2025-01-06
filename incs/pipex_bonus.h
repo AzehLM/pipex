@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 22:36:51 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/05 02:50:56 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 13:04:14 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ typedef enum e_exit
 {
 	SUCCESS,
 	ERR_FD,
-	ERR_ENV,
 	ERR_PARAMETERS,
+	ERR_ENV,
 	ERR_PIPE,
 	ERR_FORK,
 	ERR_MALLOC,
