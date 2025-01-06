@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 13:04:55 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 15:09:25 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,12 @@ void	check_valid_env(char **env)
 
 void	exit_error(t_exit_code error_code)
 {
-	if (error_code == 1)
-		ft_putendl_fd("Error, invalid PATH env", STDERR_FILENO);
-	else if (error_code == 2)
+	if (error_code == 2)
 	{
 		ft_putendl_fd("Error, wrong usage. Expected:", STDERR_FILENO);
 		ft_putendl_fd("./pipex fd1 \"cmd1\" \"cmd2\" fd2", STDERR_FILENO);
 	}
-	else if (error_code > 0 && error_code < 128)
+	else if (error_code != 2 && error_code < 128)
 		perror("Error");
 	exit(error_code);
 }

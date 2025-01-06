@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 22:36:51 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 13:04:14 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 15:18:06 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int		waiting(pid_t pid, pid_t exiter, int status);
 
 void	check_valid_env(char **env);
 void	exit_error(t_exit_code error_code);
+void	free_struct(t_pipex *data);
 void	free_data(char **str);
 
 #endif

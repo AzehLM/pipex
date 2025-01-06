@@ -4,7 +4,7 @@ include pipex.mk
 
 BUILD_DIR	:= .obj/
 OBJS 		:= $(patsubst $(SRCSDIR)%.c,$(BUILD_DIR)%.o,$(SRCS))
-OBJSB		:= $(patsubst $(SRCSDIR)%.c,$(BUILD_DIR)%.o,$(SRCSBONUS))	
+OBJSB		:= $(patsubst $(SRCSDIR)%.c,$(BUILD_DIR)%.o,$(SRCSBONUS))
 DEPS		:= $(OBJS:.o=.d)
 DEPSB		:= $(OBJSB:.o=.d)
 
@@ -25,7 +25,7 @@ DIR_DUP		= mkdir -p $(BUILD_DIR)
 .PHONY: all
 all: $(NAME)
 
-$(NAME): libft/libft.a Makefile $(OBJS) 
+$(NAME): libft/libft.a Makefile $(OBJS)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJS) -L libft -lft
 	@echo "\n$(GREEN_BOLD)✓ $(NAME) is ready$(RESETC)"
 
@@ -41,6 +41,7 @@ $(BUILD_DIR)%.o: $(SRCSDIR)%.c
 bonus: .bonus
 
 .bonus: libft/libft.a $(OBJSB)
+	@$(RM) $(NAME)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJSB) -L libft -lft
 	@echo "\n$(GREEN_BOLD)✓ $(NAME) is ready$(RESETC)"
 	@touch .bonus
@@ -59,7 +60,7 @@ clean:
 .PHONY: fclean
 fclean: clean
 	@$(MAKE) fclean -C libft/
-	$(RM) $(RMDIR) $(NAME) $(BUILD_DIR) 
+	$(RM) $(RMDIR) $(NAME) $(BUILD_DIR)
 	@echo "$(RED_BOLD)✓ push_swap is fully cleaned!$(RESETC)"
 
 .PHONY: re
