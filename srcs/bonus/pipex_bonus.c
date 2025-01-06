@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 23:03:30 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 23:05:09 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ void	exec_cmd(char *av, char **env, t_pipex *data)
 	if (!cmd)
 	{
 		free_exec_cmd(data, NULL, cmd);
-		free(data->pipe_fds);
-		free(data->pid);
 		exit_error(ERR_MALLOC);
 	}
 	path = pathfinder(cmd[0], env);
