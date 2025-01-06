@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 16:27:56 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 17:41:56 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ void	exec_cmd(char *av, char **env)
 	if (!cmd)
 		exit_error(ERR_MALLOC);
 	path = pathfinder(cmd[0], env);
-	if (!path)
+	if (path == 0)
 	{
 		free_data(cmd);
-		exit_error(ERR_PATHFINDING);
+		exit(ERR_PATHFINDING);
 	}
 	if (execve(path, cmd, env) == -1)
 	{
@@ -84,16 +84,17 @@ void	child_process(int index, char *cmd, t_pipex *data)
 	int	pipe_in;
 	int	pipe_out;
 
-	// if (!check_cmd(cmd)) // trying to resolve leak when command is not recognized
-	// {
-    //     closing(data);
-    //     if (data->infile != -1)
-    //         close(data->infile);
-    //     close(data->outfile);
-    //     free(data->pipe_fds);
-    //     free(data->pid);
-    //     exit_error(ERR_EMPTY_CMD);
-    // }
+
+    if (!check_cmd(cmd))
+    {
+        closing(data);
+        if (data->infile != -1)
+            close(data->infile);
+        close(data->outfile);
+        free(data->pipe_fds);
+        free(data->pid);
+        exit(0);
+    }
 	if (index == 0)
 	{
 		pipe_in = data->infile;
@@ -115,8 +116,16 @@ void	child_process(int index, char *cmd, t_pipex *data)
 		pipe_in = data->pipe_fds[(index - 1) * 2];
 		pipe_out = data->pipe_fds[index * 2 + 1];
 	}
-	if (dup2(pipe_in, STDIN_FILENO) == -1 || dup2(pipe_out, STDOUT_FILENO) == -1)
-		exit_error(EXIT_FAILURE);
+    if (dup2(pipe_in, STDIN_FILENO) == -1 || dup2(pipe_out, STDOUT_FILENO) == -1)
+    {
+        closing(data);
+        if (data->infile != -1)
+            close(data->infile);
+        close(data->outfile);
+        free(data->pipe_fds);
+        free(data->pid);
+        exit(ERR_FD);
+    }
 	closing(data);
 	if (pipe_in != -1)
 		close(pipe_in);
@@ -133,7 +142,7 @@ int    main(int ac, char **av, char **env)
 	init_program(&data, ac, av, env);
 	specific_open(&data);
 	init_pipes(&data);
-	data.pid = malloc(sizeof(pid_t) * data.cmd_counter);
+	data.pid = malloc(sizeof(int) * data.cmd_counter);
 	if (!data.pid)
 		exit_error(ERR_MALLOC);
 	i = 0;
@@ -149,8 +158,8 @@ int    main(int ac, char **av, char **env)
 	closing(&data);
 	close(data.infile);
 	close(data.outfile);
-	status = waiting(data.pid[data.cmd_counter - 1], 0, 0);
 	free(data.pipe_fds);
+	status = waiting(data.pid[data.cmd_counter - 1], 0, 0);
 	free(data.pid);
 	return (status);
 }
