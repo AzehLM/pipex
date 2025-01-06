@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 17:41:56 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:46:12 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ char	*pathfinder(char *cmd, char **env)
 		if (!partial_path)
 			return (free_data(env_path), NULL);
 		cmd_to_exec = ft_strjoin(partial_path, cmd);
+		free(partial_path);
 		if (!cmd_to_exec)
 			return (free_data(env_path), NULL);
-		free(partial_path);
 		if (access(cmd_to_exec, F_OK | X_OK) == 0)
 			return (free(env_path), cmd_to_exec);
 		free(cmd_to_exec);
@@ -45,26 +45,34 @@ char	*pathfinder(char *cmd, char **env)
 	return (NULL);
 }
 
-void	exec_cmd(char *av, char **env)
+void	exec_cmd(char *av, char **env, t_pipex *data)
 {
 	char	**cmd;
 	char	*path;
 
 	cmd = ft_split(av, ' ');
 	if (!cmd)
+	{
+		free(data->pipe_fds);
+		free(data->pid);
 		exit_error(ERR_MALLOC);
+	}
 	path = pathfinder(cmd[0], env);
-	if (path == 0)
-	{
-		free_data(cmd);
-		exit(ERR_PATHFINDING);
-	}
-	if (execve(path, cmd, env) == -1)
-	{
-		free(path);
-		free_data(cmd);
-		exit_error(ERR_EXECVE);
-	}
+	if (!path)
+    {
+        free_data(cmd);
+        free(data->pipe_fds);
+        free(data->pid);
+        exit(ERR_PATHFINDING);
+    }
+    if (execve(path, cmd, env) == -1)
+    {
+        free(path);
+        free_data(cmd);
+        free(data->pipe_fds);
+        free(data->pid);
+        exit_error(ERR_EXECVE);
+    }
 }
 
 void	closing(t_pipex *data)
@@ -127,10 +135,10 @@ void	child_process(int index, char *cmd, t_pipex *data)
         exit(ERR_FD);
     }
 	closing(data);
+	close(pipe_out);
 	if (pipe_in != -1)
 		close(pipe_in);
-	close(pipe_out);
-	exec_cmd(cmd, data->env);
+	exec_cmd(cmd, data->env, data);
 }
 
 int    main(int ac, char **av, char **env)
