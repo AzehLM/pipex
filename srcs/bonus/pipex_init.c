@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 15:51:17 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 21:18:49 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 22:54:11 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,15 @@ void	init_program(t_pipex *data, int ac, char **av, char **env)
 	data->ac = ac;
 	data->av = av;
 	data->env = env;
+}
+
+void	cleanup_and_exit(t_pipex *data, int exit_code)
+{
+	closing(data);
+	if (data->infile != -1)
+		close(data->infile);
+	close(data->outfile);
+	free(data->pipe_fds);
+	free(data->pid);
+	exit(exit_code);
 }

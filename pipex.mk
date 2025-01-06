@@ -6,7 +6,7 @@
 #    By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/29 13:53:50 by gueberso          #+#    #+#              #
-#    Updated: 2025/01/06 16:06:55 by gueberso         ###   ########.fr        #
+#    Updated: 2025/01/06 22:48:58 by gueberso         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ override MANDATORYSRC	:= \
 SRCBONUS += $(addprefix $(BONUSDIR), $(addsuffix .c, $(BONUSSRC)))
 
 override BONUSSRC		:= \
+	child \
 	pipex_bonus \
-	pipex_utils \
 	pipex_init \
+	pipex_utils \
