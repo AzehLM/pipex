@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 20:46:12 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 21:01:32 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void	child_process(int index, char *cmd, t_pipex *data)
 		{
 			closing(data);
 			close(data->outfile);
+            free(data->pipe_fds);
+            free(data->pid);
 			exit(0);
 		}
 	}
@@ -138,6 +140,8 @@ void	child_process(int index, char *cmd, t_pipex *data)
 	close(pipe_out);
 	if (pipe_in != -1)
 		close(pipe_in);
+	close(data->outfile);
+	close(data->infile);
 	exec_cmd(cmd, data->env, data);
 }
 
