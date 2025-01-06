@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 15:51:17 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 20:29:41 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/06 21:18:49 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,7 @@ void	heredoc_handling(t_pipex *data)
 		ft_putstr_fd("heredoc> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
-		{
-			close(fd[0]);
-			close(fd[1]);
 			exit_error(ERR_MALLOC);
-		}
 		if (ft_strncmp(line, data->av[2], ft_strlen(data->av[2])) == 0 && \
 			line[ft_strlen(data->av[2])] == '\n')
 		{
