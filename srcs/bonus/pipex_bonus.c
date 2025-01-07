@@ -6,75 +6,28 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 23:05:09 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:05:35 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include <fcntl.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 
-char	*pathfinder(char *cmd, char **env)
+int	waiting(pid_t pid, pid_t exiter, int status)
 {
-	char	**env_path;
-	char	*cmd_to_exec;
-	char	*partial_path;
-	int		i;
+	static int	ret = SUCCESS;
 
-	i = 0;
-	while (ft_strnstr(env[i], "PATH=", 5) == 0)
-		i++;
-	env_path = ft_split(env[i] + 5, ':');
-	if (!env_path)
-		return (0);
-	i = -1;
-	while (env_path[++i])
+	while (1)
 	{
-		partial_path = ft_strjoin(env_path[i], "/");
-		cmd_to_exec = ft_strjoin(partial_path, cmd);
-		free(partial_path);
-		if (access(cmd_to_exec, F_OK | X_OK) == 0)
-			return (free(env_path), cmd_to_exec);
-		free(cmd_to_exec);
+		exiter = wait(&status);
+		if (exiter == pid)
+			ret = WEXITSTATUS(status);
+		if (exiter < 0)
+			break ;
 	}
-	free_data(env_path);
-	return (0);
-}
-
-void	free_exec_cmd(t_pipex *data, char *path, char **cmd)
-{
-	if (data->pipe_fds)
-		free(data->pipe_fds);
-	if (data->pid)
-		free(data->pid);
-	if (path)
-		free(path);
-	if (cmd)
-		free_data(cmd);
-}
-
-void	exec_cmd(char *av, char **env, t_pipex *data)
-{
-	char	**cmd;
-	char	*path;
-
-	cmd = ft_split(av, ' ');
-	if (!cmd)
-	{
-		free_exec_cmd(data, NULL, cmd);
-		exit_error(ERR_MALLOC);
-	}
-	path = pathfinder(cmd[0], env);
-	if (!path)
-	{
-		free_exec_cmd(data, path, cmd);
-		exit(ERR_PATHFINDING);
-	}
-	if (execve(path, cmd, env) == -1)
-	{
-		free_exec_cmd(data, path, cmd);
-		exit_error(ERR_EXECVE);
-	}
+	return (ret);
 }
 
 void	closing(t_pipex *data)
@@ -89,6 +42,18 @@ void	closing(t_pipex *data)
 	}
 	close(data->infile);
 	close(data->outfile);
+}
+
+void	exit_error(t_exit_code error_code)
+{
+	if (error_code == 2)
+	{
+		ft_putendl_fd("Error, wrong usage. Expected:", STDERR_FILENO);
+		ft_putendl_fd("./pipex fd1 \"cmd1\" \"cmd2\" fd2", STDERR_FILENO);
+	}
+	else if (error_code != 2 && error_code < 128)
+		perror("Error");
+	exit(error_code);
 }
 
 int	main(int ac, char **av, char **env)

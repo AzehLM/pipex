@@ -6,12 +6,11 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 17:37:40 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:16:38 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-#include <sys/wait.h>
 
 void	free_data(char **str)
 {
@@ -31,6 +30,19 @@ void	free_data(char **str)
 	}
 }
 
+void	cleanup_and_exit(t_pipex *data, int exit_code)
+{
+	closing(data);
+	if (data->infile != -1)
+		close(data->infile);
+	close(data->outfile);
+	free(data->pipe_fds);
+	free(data->pid);
+	exit(exit_code);
+}
+
+
+
 void	check_valid_env(char **env)
 {
 	static int	i = 0;
@@ -38,7 +50,7 @@ void	check_valid_env(char **env)
 
 	while (env[i])
 	{
-		if (ft_strnstr(env[i], "PATH=", 5) && env[i][6])
+		if (ft_strnstr(env[i], "PATH=", 5) && env[i][5])
 		{
 			check = true;
 			break ;
@@ -47,33 +59,6 @@ void	check_valid_env(char **env)
 	}
 	if (check == false)
 		exit_error(ERR_ENV);
-}
-
-void	exit_error(t_exit_code error_code)
-{
-	if (error_code == 2)
-	{
-		ft_putendl_fd("Error, wrong usage. Expected:", STDERR_FILENO);
-		ft_putendl_fd("./pipex fd1 \"cmd1\" \"cmd2\" fd2", STDERR_FILENO);
-	}
-	else if (error_code != 2 && error_code < 128)
-		perror("Error");
-	exit(error_code);
-}
-
-int	waiting(pid_t pid, pid_t exiter, int status)
-{
-	static int	ret = SUCCESS;
-
-	while (1)
-	{
-		exiter = wait(&status);
-		if (exiter == pid)
-			ret = WEXITSTATUS(status);
-		if (exiter < 0)
-			break ;
-	}
-	return (ret);
 }
 
 int	check_cmd(char *cmd)

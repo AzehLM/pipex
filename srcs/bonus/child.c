@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:40:35 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 22:54:00 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:32:03 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	middle_child(t_pipex *data, int index, int *pipe_in, int *pipe_out)
 	*pipe_out = data->pipe_fds[index * 2 + 1];
 }
 
-static void	setup_pipes(int pipe_in, int pipe_out, t_pipex *data)
+static void	setup_pipes(t_pipex *data, int pipe_in, int pipe_out)
 {
 	if (dup2(pipe_in, STDIN_FILENO) == -1 || \
 		dup2(pipe_out, STDOUT_FILENO) == -1)
@@ -60,6 +60,6 @@ void	child_process(int index, char *cmd, t_pipex *data)
 		last_child(data, index, &pipe_in, &pipe_out);
 	else
 		middle_child(data, index, &pipe_in, &pipe_out);
-	setup_pipes(pipe_in, pipe_out, data);
-	exec_cmd(cmd, data->env, data);
+	setup_pipes(data, pipe_in, pipe_out);
+	exec_cmd(data, cmd);
 }

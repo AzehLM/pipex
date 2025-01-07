@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 15:51:17 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/06 22:54:11 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:35:44 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	heredoc_handling(t_pipex *data)
 		exit_error(ERR_PIPE);
 	while (1)
 	{
-		ft_putstr_fd("heredoc> ", STDOUT_FILENO);
+		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			exit_error(ERR_MALLOC);
@@ -61,6 +61,7 @@ void	heredoc_handling(t_pipex *data)
 		free(line);
 	}
 	data->infile = fd[0];
+	ft_printf("fd[1] = %d\n", fd[1]);
 	if (fd[1] > 2)
 		close(fd[1]);
 }
@@ -97,15 +98,4 @@ void	init_program(t_pipex *data, int ac, char **av, char **env)
 	data->ac = ac;
 	data->av = av;
 	data->env = env;
-}
-
-void	cleanup_and_exit(t_pipex *data, int exit_code)
-{
-	closing(data);
-	if (data->infile != -1)
-		close(data->infile);
-	close(data->outfile);
-	free(data->pipe_fds);
-	free(data->pid);
-	exit(exit_code);
 }
