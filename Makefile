@@ -8,6 +8,8 @@ OBJSB		:= $(patsubst $(SRCSDIR)%.c,$(BUILD_DIR)%.o,$(SRCSBONUS))
 DEPS		:= $(OBJS:.o=.d)
 DEPSB		:= $(OBJSB:.o=.d)
 
+# ********** FLAGS AND COMPILATION FLAGS ************************************* #
+
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror
 CPPFLAGS	:= -MMD -MP -I incs/ -I libft/incs/
@@ -18,6 +20,8 @@ MAKEFLAGS	+= --no-print-directory
 DIR_DUP		= mkdir -p $(BUILD_DIR)
 
 .DEFAULT_GOAL	:= all
+
+# ********** RULES *********************************************************** #
 
 -include $(DEPS)
 -include $(DEPSB)
@@ -40,10 +44,10 @@ $(BUILD_DIR)%.o: $(SRCSDIR)%.c
 .PHONY: bonus
 bonus: .bonus
 
-.bonus: libft/libft.a $(OBJSB)
+.bonus: libft/libft.a Makefile $(OBJSB)
 	@$(RM) $(NAME)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJSB) -L libft -lft
-	@echo "\n$(GREEN_BOLD)✓ $(NAME) is ready$(RESETC)"
+	@echo "\n$(GREEN_BOLD)✓ $(NAME) bonus is ready$(RESETC)"
 	@touch .bonus
 
 $(BUILD_DIR)bonus/%.o: $(SRCSDIR)bonus/%.c
@@ -60,8 +64,8 @@ clean:
 .PHONY: fclean
 fclean: clean
 	@$(MAKE) fclean -C libft/
-	$(RM) $(RMDIR) $(NAME) $(BUILD_DIR)
-	@echo "$(RED_BOLD)✓ push_swap is fully cleaned!$(RESETC)"
+	@$(RM) $(RMDIR) $(NAME) $(BUILD_DIR)
+	@echo "$(RED_BOLD)✓ pipex is fully cleaned!$(RESETC)"
 
 .PHONY: re
 re: fclean all

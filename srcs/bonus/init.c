@@ -6,13 +6,12 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 15:51:17 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 15:43:14 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:57:07 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include <fcntl.h>
-#include <sys/types.h>
 
 void	init_pipes(t_pipex *data)
 {

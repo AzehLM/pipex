@@ -6,13 +6,11 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 15:44:12 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:16:30 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-#include <fcntl.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 
 int	waiting(pid_t pid, pid_t exiter, int status)

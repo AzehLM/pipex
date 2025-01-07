@@ -6,13 +6,13 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 15:44:44 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:50:44 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	free_data(char **str)
+void	free_tab(char **str)
 {
 	size_t		i;
 

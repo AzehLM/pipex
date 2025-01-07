@@ -6,13 +6,11 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 14:41:24 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 14:41:40 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:16:23 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-#include <fcntl.h>
-#include <sys/types.h>
 
 char	*pathfinder(char *cmd, char **env)
 {
@@ -37,7 +35,7 @@ char	*pathfinder(char *cmd, char **env)
 			return (free(env_path), cmd_to_exec);
 		free(cmd_to_exec);
 	}
-	free_data(env_path);
+	free_tab(env_path);
 	return (0);
 }
 
@@ -50,7 +48,7 @@ void	free_exec_cmd(t_pipex *data, char *path, char **cmd)
 	if (path)
 		free(path);
 	if (cmd)
-		free_data(cmd);
+		free_tab(cmd);
 }
 
 void	exec_cmd(t_pipex *data, char *av)

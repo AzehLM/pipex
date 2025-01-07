@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:40:35 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 13:32:03 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:15:48 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ static void	first_child(t_pipex *data, int *pipe_in, int *pipe_out)
 		cleanup_and_exit(data, 0);
 }
 
-static void	last_child(t_pipex *data, int index, int *pipe_in, int *pipe_out)
-{
-	*pipe_in = data->pipe_fds[(index - 1) * 2];
-	*pipe_out = data->outfile;
-}
-
 static void	middle_child(t_pipex *data, int index, int *pipe_in, int *pipe_out)
 {
 	*pipe_in = data->pipe_fds[(index - 1) * 2];
 	*pipe_out = data->pipe_fds[index * 2 + 1];
+}
+
+static void	last_child(t_pipex *data, int index, int *pipe_in, int *pipe_out)
+{
+	*pipe_in = data->pipe_fds[(index - 1) * 2];
+	*pipe_out = data->outfile;
 }
 
 static void	setup_pipes(t_pipex *data, int pipe_in, int pipe_out)
