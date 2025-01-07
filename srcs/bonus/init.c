@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_init.c                                       :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 15:51:17 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 15:57:07 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 16:40:06 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	heredoc_handling(t_pipex *data)
 
 void	specific_open(t_pipex *data)
 {
-	if (ft_strncmp(data->av[1], "here_doc", 8) == 0 && data->ac >= 6)
+	if (ft_strncmp(data->av[1], "here_doc\0", 9) == 0 && data->ac >= 6)
 	{
 		data->cmd_counter = data->ac - 4;
 		data->pipe_counter = data->cmd_counter - 1;
