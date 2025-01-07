@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 16:16:30 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 17:55:54 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,15 @@ void	closing(t_pipex *data)
 
 void	exit_error(t_exit_code error_code)
 {
-	if (error_code == 2)
+	if (error_code == 3)
+		ft_putendl_fd("Error, can't find PATH in env", STDERR_FILENO);
+	else if (error_code == 2)
 	{
 		ft_putendl_fd("Error, wrong usage. Expected:", STDERR_FILENO);
 		ft_putendl_fd("./pipex fd1 \"cmd1\" \"cmd2\" fd2", STDERR_FILENO);
 	}
-	else if (error_code != 2 && error_code < 128)
+	else if ((error_code != 2 && error_code < 128) || \
+		(error_code != 3 && error_code < 128))
 		perror("Error");
 	exit(error_code);
 }
