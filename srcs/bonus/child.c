@@ -6,13 +6,12 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:40:35 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 16:15:48 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 17:21:36 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 #include <fcntl.h>
-#include <sys/types.h>
 
 static void	first_child(t_pipex *data, int *pipe_in, int *pipe_out)
 {
