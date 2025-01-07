@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 22:36:51 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 15:05:13 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:44:51 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ char	*pathfinder(char *cmd, char **env);
 
 void	exec_cmd(t_pipex *data, char *av);
 void	free_exec_cmd(t_pipex *data, char *path, char **cmd);
-int	waiting(pid_t pid, pid_t exiter, int status);
+int		waiting(pid_t pid, pid_t exiter, int status);
 
 #endif

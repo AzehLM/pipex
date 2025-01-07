@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 13:47:14 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 15:16:38 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:44:44 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	cleanup_and_exit(t_pipex *data, int exit_code)
 	free(data->pid);
 	exit(exit_code);
 }
-
-
 
 void	check_valid_env(char **env)
 {

@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 15:51:17 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 15:35:44 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:43:14 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	heredoc_handling(t_pipex *data)
 		free(line);
 	}
 	data->infile = fd[0];
-	ft_printf("fd[1] = %d\n", fd[1]);
 	if (fd[1] > 2)
 		close(fd[1]);
 }

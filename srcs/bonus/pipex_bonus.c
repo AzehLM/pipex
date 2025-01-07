@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/07 15:05:35 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:44:12 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,9 @@ void	closing(t_pipex *data)
 {
 	int	i;
 
-	i = 0;
-	while (i < (2 * data->pipe_counter))
-	{
+	i = -1;
+	while (++i < (2 * data->pipe_counter))
 		close(data->pipe_fds[i]);
-		i++;
-	}
 	close(data->infile);
 	close(data->outfile);
 }
