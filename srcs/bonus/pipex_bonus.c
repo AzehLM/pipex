@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 12:06:25 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/17 13:48:27 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/17 13:51:16 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	main(int ac, char **av, char **env)
 	init_pipes(&data);
 	data.pid = malloc(sizeof(int) * data.cmd_counter);
 	if (!data.pid)
-		exit_error(ERR_MALLOC);
+		cleanup_and_exit(&data, ERR_MALLOC);
 	i = -1;
 	while (++i < data.cmd_counter)
 	{
