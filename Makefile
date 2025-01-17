@@ -75,30 +75,6 @@ FORCE:
 
 .SILENT: clean fclean
 
-# ********** valgrind and fsanitize flags ************************************ #
-
-.PHONY: asan
-asan: CFLAGS += -fsanitize=address -g
-asan: re
-	@echo "$(GREEN_BOLD)✓ $(NAME) is compiled with AddressSanitizer$(RESETC)"
-
-.PHONY: valgrind
-valgrind: CFLAGS += -g3
-valgrind: re
-	@echo "$(GREEN_BOLD)✓ $(NAME) is compiled with debug symbols for valgrind$(RESETC)"
-
-.PHONY: asanb
-asanb: CFLAGS += -fsanitize=address -g
-asanb: bonus
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJSB) -L libft -lft
-	@echo "$(GREEN_BOLD)✓ $(NAME) bonus is compiled with AddressSanitizer$(RESETC)"
-
-.PHONY: valgrindb
-valgrindb: CFLAGS += -g3
-valgrindb: bonus
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $(NAME) $(OBJSB) -L libft -lft
-	@echo "$(GREEN_BOLD)✓ $(NAME) bonus is compiled with debug symbols for valgrind$(RESETC)"
-
 # ********** COLORS AND BACKGROUND COLORS ************************************ #
 
 RESETC				:=	\033[0m
