@@ -22,9 +22,8 @@ by using it in your program.*
 12. [Fonction wait() et wait(pid)](#fonction-wait-et-waitpid)
 13. [Pièges à éviter](#pièges-à-éviter)
 14. [Check leak](#check-leak)
-15. [Minishell](#minishell)
-16. [Autres ressources](#autres-ressources)
-17. [Infodump](#infodump)
+15. [Autres ressources](#autres-ressources)
+16. [Infodump](#infodump)
 
 ---
 
