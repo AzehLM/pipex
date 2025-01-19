@@ -2,7 +2,7 @@
 
 # Table des matières
 1. [Références YouTube](#références-youtube)
-2. [Ressources globales C](#ressources-globales-c)
+2. [Ressources globales C](#autres-références)
 3. [Outils interactifs](#outils-interactifs)
 4. [Ressources spécifiques au projet Pipex](#ressources-spécifiques-au-projet-pipex)
 5. [Le type pid_t](#le-type-pid_t)
@@ -11,41 +11,44 @@
 8. [Fonction execve()](#fonction-execve)
 9. [Comprendre l'image d'un processus](#comprendre-limage-dun-processus)
 10. [Pipe et pourquoi close les fds](#pipe-et-pourquoi-close-les-fds)
-11. [Pièges à éviter](#pièges-à-éviter)
-12. [Check leak](#check-leak)
-13. [Minishell](#minishell)
-14. [Autres ressources](#autres-ressources)
-15. [Infodump](#infodump)
+11. [Fonction fork()](#fonction-fork)
+12. [Fonction wait() et wait(pid)](#fonction-wait-et-waitpid)
+13. [Pièges à éviter](#pièges-à-éviter)
+14. [Check leak](#check-leak)
+15. [Minishell](#minishell)
+16. [Autres ressources](#autres-ressources)
+17. [Infodump](#infodump)
 
 ## References YouTube
 - [CodeVault Playlist (Notions importantes pour le projet et plus)](https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY)
 - [Autre vidéo sur les pipelines](https://www.youtube.com/watch?v=QD9YKSg3wCc&list=PLK4FY1IoDcHG-jUt93Cl7n7XLQDZ0q7Tv)
 
-## Ressources globales C
+## Autres références
 
-[Documentation C devdocs](https://devdocs.io/c/)
+[Understanding command execution and input/output data flow](https://www.rozmichelle.com/pipes-forks-dups/)
+
 ##### Codequoi:
 - [La méthode `pipe` pour la communication inter-processus](https://www.codequoi.com/pipe-une-methode-de-communication-inter-processus/)
 - [Gestion des erreurs en C avec `errno`](https://www.codequoi.com/errno-et-la-gestion-derreur-en-c/)
 - [Création et gestion des processus fils en C](https://www.codequoi.com/creer-et-tuer-des-processus-fils-en-c/)
 
-## Outils interactifs
-- [Explainshell : explication des commandes shell](https://explainshell.com/explain?cmd=cat+%7C+cat+%7C+ls)
+### Outils interactifs
+
+[Explainshell : explication des commandes shell](https://explainshell.com/explain?cmd=cat+%7C+cat+%7C+ls)
 
 ---
 
 ## Ressources spécifiques au projet Pipex
-### A regarder en dernier
-L'objectif est de comprendre les processus dans leur ensemble et non seulement pour le rendu du projet 42. Toutefois, les explications des fonctions autorisées peuvent aider à la recherche de notions externes au projet.
+L'objectif est de comprendre les processus dans leur ensemble et non seulement pour le rendu du projet. Toutefois, les explications des fonctions autorisées peuvent aider à la recherche de notions externes au projet.
 
-- [Reactive : Guide complet pour Pipex](https://reactive.so/post/42-a-comprehensive-guide-to-pipex/)
 - [CSNotes : Tutoriel sur Pipex](https://csnotes.medium.com/pipex-tutorial-42-project-4469f5dd5901)
+- [Reactive : Guide complet pour Pipex](https://reactive.so/post/42-a-comprehensive-guide-to-pipex/)
 - [Medium : Comprendre les pipelines en C avec Pipex](https://medium.com/@omimouni33/pipex-the-42-project-understanding-pipelines-in-c-71984b3f2103)
 - [Medium : Pipex 42 - Chapitre 1](https://medium.com/@lannur-s/pipex-42-chapter-1-metamorphosis-execve-1a4710ab8cb1)
 
-### Partie bonus (Heredoc)
-- [Documentation sur Bash Heredoc](https://linuxize.com/post/bash-heredoc/)
-- [Phoenixnap : Guide sur Bash Heredoc](https://phoenixnap.com/kb/bash-heredoc)
+### Partie bonus (heredoc)
+- [Documentation sur Bash heredoc](https://linuxize.com/post/bash-heredoc/)
+- [Phoenixnap : Guide sur Bash heredoc](https://phoenixnap.com/kb/bash-heredoc)
 
 ---
 
@@ -112,13 +115,15 @@ L'objectif est de comprendre les processus dans leur ensemble et non seulement p
 ## Comprendre l'image d'un processus
 
 Lorsqu'un processus est exécuté par l'OS, il possède une "image" en mémoire. Cette image comprend :
-- Le **code exécutable** : les instructions lues à partir du fichier binaire.
+- Le **segment de texte** : zone mémoire ou est le **code exécutable** est stocké
+  - Il contient les inscructions machines lues à partir du fichier binaire.
+  - Ce segment est en **lecture seule** pour empêcher les modifications accidentelles ou malveillantes du code.
 - Les **segments de données** :
   - Statique : Variables globales, constantes...
   - Dynamique (heap) : Mémoire allouée dynamiquement avec `malloc()`, etc.
 - La **pile** (stack) : Utilisée pour les appels de fonctions, les variables locales, etc.
 - Les **descripteurs de fichiers** : Informations sur les fichiers ouverts.
-- Le **contexte d'exécution** : Registres du CPU, pointeur d'instruction, etc.
+- Le **contexte d'exécution** : Registres du CPU, pointeur d'instruction (adresse de la prochaine instruction à exécuter), pointeur de pile (indique le sommet de la pile).
 
 ### Ce qui se passe lorsque `execve()` est appelé :
 - L'ancienne image du processus est remplacée par la nouvelle image (à partir du fichier binaire du programme spécifié).
@@ -149,7 +154,7 @@ Si ces descripteurs ne sont pas fermés:
 - Si un processus tente de lire un pipe, mais aucun autre processus n'écrit dans ce pipe (car `fd[1]` est ouvert), le processus lecteur peut se bloquer en attente de donnée
 - Un processus écrivant dans un pipe peut se bloquer si le lecteur ne lit pas les données et que le buffer du pipe est plein.
 
-## Buffer d'un pipe
+### Buffer d'un pipe
 Le buffer d'un pipe est une zone de mémoire temporaire qui sert à stocker les données en transit entre le processus qui écrit et le processus qui lit.
 Quelques spécificités de ce buffer:
 - A une taille limite (64KB (``65536 bytes``))
@@ -161,9 +166,6 @@ Quand le buffer est plein:
 Quand le buffer est vide:
 - Le `read()` se bloque en attendant des données
 - Ou renvoie -1 si le write end (`fd[1]`)est fermé
-
-#### NE PAS CONFONDRE BUFFER ET IMAGE
-Ce sont bien deux choses différentes avec des données différentes.
 
 ---
 
@@ -193,7 +195,7 @@ Pour `pipex`, `fork()` est utilisé pour créer les processus enfant en charge d
 #### Utilisation successive de sleep :
 - `./pipex infile "sleep 5" "sleep 4" outfile `
 
-#### On pourrait s'attendre a ce que le programme sorte apres avoir executer les deux sleep l'un apres l'autre. Cependant `fork` ne fonctionne pas de cette facon, tous les processus s'execute en meme temps.
+**On pourrait s'attendre a ce que le programme sorte apres avoir executer les deux sleep l'un apres l'autre. Cependant `fork` ne fonctionne pas de cette facon, tous les processus s'execute en meme temps.**
 
 Ici notre programme doit sortir apres 5 secondes. (cela aurait aussi ete le cas avec `./pipex infile "sleep 3" "sleep 5" outfile`)
 
@@ -202,7 +204,6 @@ Ici notre programme doit sortir apres 5 secondes. (cela aurait aussi ete le cas 
 
 
 Risque de segfault dans les process si ce cas n'est pas geré, `execve` est probablement la source du probleme.
-Solution : check isspace jusqu'a ce qu'on tombe sur un autre charactère, a partir de la nos fonctions `get_path` et `exec` prennent le relai.
 
 ---
 
@@ -220,21 +221,6 @@ Neanmoins, l'utilisation d'`execve` pertube la detection de leaks puisque les im
 Bien penser a mettre en commentaire les parties ou `execve` est utilisé.
 Pour débuguer correctement, voici les options que j'ai utilisé avec valgrind :
 - `--leak-check=full --show-leak-kinds=all --track-origins=yes --show-mismatched-frees=yes --track-fds=yes --trace-children=yes`
----
-## Minishell
-
-- [Minishell guide](https://github.com/AudeizReading/42-cursus/tree/main/01-2021-03-2023-05-tronc-commun/08-minishell)
----
-### Qu'est-ce que Minishell ?
-- [Vidéo YouTube : Introduction à Minishell](https://www.youtube.com/watch?v=yTR00r8vBH8)
-- [Documentation sur la création d'un shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
-- [Architecture de Minishell](https://whimsical.com/minishell-architecture-big-picture-7b9N8PL3qHrddbs977mQ2J)
-
-### Quelques rendus avec erreurs :
-- [Rendu de Minishell avec erreurs (Push invalidés)](https://projects.intra.42.fr/1331/aascedu)
-- [Autre rendu avec erreurs](https://projects.intra.42.fr/projects/42cursus-minishell/projects_users/3658701)
-- [Encore un autre rendu](https://projects.intra.42.fr/projects/42cursus-minishell/projects_users/3676106)
-
 ---
 
 ## Autres ressources
@@ -256,7 +242,6 @@ Option `-u` utile pour voir la liste des symboles.
 
  [Tutoriel sur les compilateurs](https://ruslanspivak.com/lsbasi-part1/)
 
- [Understanting command execution and input/output data flow](https://www.rozmichelle.com/pipes-forks-dups/)
 
 #### Norme ANSI
 [Guide des règles de programmation sécurisées en C (ANSSI)](https://cyber.gouv.fr/sites/default/files/2020/07/anssi-guide-regles_de_programmation_pour_le_developpement_securise_de_logiciels_en_langage_c-v1.4.pdf)
