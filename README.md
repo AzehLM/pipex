@@ -11,12 +11,11 @@
 8. [Fonction execve()](#fonction-execve)
 9. [Comprendre l'image d'un processus](#comprendre-limage-dun-processus)
 10. [Pipe et pourquoi close les fds](#pipe-et-pourquoi-close-les-fds)
-11. [Pièges à éviter](#pieges-à-éviter)
+11. [Pièges à éviter](#pièges-à-éviter)
 12. [Check leak](#check-leak)
 13. [Minishell](#minishell)
 14. [Autres ressources](#autres-ressources)
 15. [Infodump](#infodump)
-16. [TO DO](#to-do)
 
 ## References YouTube
 - [CodeVault Playlist (Notions importantes pour le projet et plus)](https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY)
@@ -132,7 +131,7 @@ Lorsqu'un processus est exécuté par l'OS, il possède une "image" en mémoire.
 ### `pipe()`
 - [Manpage `pipe()`](https://linux.die.net/man/2/pipe)
 - La fonction `pipe()` crée un pipeline (buffer, voir suite) de communication unidirectionnel entre processus.
-#### Data flow : `write end -> buffer -> read end` 
+#### Data flow : `write end -> buffer -> read end`
 
 #### Pourquoi fermer tous les fd ?
 - Fuites de ressources
@@ -145,7 +144,7 @@ Chaque fois qu'un pipe est créé avec la fonction `pipe(fd)`, il ouvre deux fd:
 Si ces descripteurs ne sont pas fermés:
 - Ils restent ouverts dans le processus et consomment une ressource système
 - Avec plusieurs pipelines, on peut attendre la limite maximale du nombre de fd ouverts par un processus (entrainant `EMFILE` (``"Too many open files"``))
-  
+
 #### Un `pipe` est un canal de communication entre deux processus:
 - Si un processus tente de lire un pipe, mais aucun autre processus n'écrit dans ce pipe (car `fd[1]` est ouvert), le processus lecteur peut se bloquer en attente de donnée
 - Un processus écrivant dans un pipe peut se bloquer si le lecteur ne lit pas les données et que le buffer du pipe est plein.
@@ -168,10 +167,32 @@ Ce sont bien deux choses différentes avec des données différentes.
 
 ---
 
+## Fonction `fork()`
+
+### `fork()`
+- [Manpage `dup()`](https://linux.die.net/man/2/fork)
+- La fonction `fork()` est utilisée pour créer un nouveau processus, appelé processus enfant, en dupliquant le processus parent.
+#### Comportement:
+- Après l'appel à `fork()`m deux processus existent: le parent et l'enfant.
+- Dans le processus parent, `fork()` retourne le `pid` du processus enfant.
+- Dans le processus enfant, `fork()` retourne 0.
+- Si `fork()` échoue, la fonction retourne -1 et aucun processus n'est créé. `errno` est défini et indique l'erreur.
+
+Pour `pipex`, `fork()` est utilisé pour créer les processus enfant en charge d'exécuter les commande via `execve()`.
+
+---
+
+## Fonction `wait()` et `waitpid()`
+- Ces fonctions permettent au processus parent d'attendre la terminaise d'un ou plusieurs processus enfants.
+- Après un `fork()`, le parent peut utiliser l'une de ces deux fonciton pour attendre la fin de ses enfants.
+- Cela permet de synchroniser correctement les étapes du pipeline et de récupere les codes de sorties des commandes exécutées.
+
+---
+
 ### Pieges a eviter
 #### Utilisation successive de sleep :
 - `./pipex infile "sleep 5" "sleep 4" outfile `
-  
+
 #### On pourrait s'attendre a ce que le programme sorte apres avoir executer les deux sleep l'un apres l'autre. Cependant `fork` ne fonctionne pas de cette facon, tous les processus s'execute en meme temps.
 
 Ici notre programme doit sortir apres 5 secondes. (cela aurait aussi ete le cas avec `./pipex infile "sleep 3" "sleep 5" outfile`)
@@ -181,13 +202,13 @@ Ici notre programme doit sortir apres 5 secondes. (cela aurait aussi ete le cas 
 
 
 Risque de segfault dans les process si ce cas n'est pas geré, `execve` est probablement la source du probleme.
-Solution : check isspace jusqu'a ce qu'on tombe sur un autre charactère, a partir de la nos fonctions `get_path` et `exec` prennent le relai. 
+Solution : check isspace jusqu'a ce qu'on tombe sur un autre charactère, a partir de la nos fonctions `get_path` et `exec` prennent le relai.
 
 ---
 
 ## Check leak
 
-Etant donner la nature du projet, une mauvaise utilisation de `valgrind` ou de `fsanitize` ralentirai la detection de leaks. 
+Etant donner la nature du projet, une mauvaise utilisation de `valgrind` ou de `fsanitize` ralentirai la detection de leaks.
 
 ### Solution
 
@@ -197,7 +218,8 @@ Plusieurs options:
 
 Neanmoins, l'utilisation d'`execve` pertube la detection de leaks puisque les images des processus sont redefinis.
 Bien penser a mettre en commentaire les parties ou `execve` est utilisé.
-
+Pour débuguer correctement, voici les options que j'ai utilisé avec valgrind :
+- `--leak-check=full --show-leak-kinds=all --track-origins=yes --show-mismatched-frees=yes --track-fds=yes --trace-children=yes`
 ---
 ## Minishell
 
@@ -222,26 +244,19 @@ Pas sûr si c'est nécessaire pour le projet, mais voici quelques ressources :
 - [Écrire un simple Garbage Collector en C](https://maplant.com/2020-04-25-Writing-a-Simple-Garbage-Collector-in-C.html)
 - [BDWGC : Garbage Collector pour C](https://github.com/ivmai/bdwgc)
 
---- 
+---
 
 ### List symbols from object files `nm`
 Option `-u` utile pour voir la liste des symboles.
 - GNU extension affiche une seule fois chaque symbole de chaque type en cours d'utilisation
 
- 
+
  ---
 ## Infodump
 
-Récupérer la valeur du bon enfant avec `waitpid`
-
  [Tutoriel sur les compilateurs](https://ruslanspivak.com/lsbasi-part1/)
 
-##### Norme ANSI
-- [Guide des règles de programmation sécurisées en C (ANSSI)](https://cyber.gouv.fr/sites/default/files/2020/07/anssi-guide-regles_de_programmation_pour_le_developpement_securise_de_logiciels_en_langage_c-v1.4.pdf)
+ [Understanting command execution and input/output data flow](https://www.rozmichelle.com/pipes-forks-dups/)
 
-
----
-
-# TO DO
-
-WIFEXITED explained
+#### Norme ANSI
+[Guide des règles de programmation sécurisées en C (ANSSI)](https://cyber.gouv.fr/sites/default/files/2020/07/anssi-guide-regles_de_programmation_pour_le_developpement_securise_de_logiciels_en_langage_c-v1.4.pdf)
