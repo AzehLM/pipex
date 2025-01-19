@@ -6,7 +6,7 @@
 /*   By: gueberso <gueberso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 15:51:17 by gueberso          #+#    #+#             */
-/*   Updated: 2025/01/17 13:48:43 by gueberso         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:36:11 by gueberso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ void	heredoc_handling(t_pipex *data)
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
-			exit_error(ERR_MALLOC);
+		{
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			break ;
+		}
 		if (ft_strncmp(line, data->av[2], ft_strlen(data->av[2])) == 0 && \
 			line[ft_strlen(data->av[2])] == '\n')
 		{
@@ -60,8 +63,7 @@ void	heredoc_handling(t_pipex *data)
 		free(line);
 	}
 	data->infile = fd[0];
-	if (fd[1] > 2)
-		close(fd[1]);
+	close(fd[1]);
 }
 
 void	specific_open(t_pipex *data)
