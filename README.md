@@ -202,17 +202,13 @@ Pour `pipex`, `fork()` est utilisé pour créer les processus enfant en charge d
 
 ### Pieges a eviter
 #### Utilisation successive de sleep :
-- `./pipex infile "sleep 5" "sleep 4" outfile `
+- `./pipex infile "sleep 5" "sleep 3" outfile `
 
 **On pourrait s'attendre a ce que le programme sorte apres avoir executer les deux sleep l'un apres l'autre. Cependant `fork` ne fonctionne pas de cette facon, tous les processus s'execute en meme temps.**
 
 Ici notre programme doit sortir apres 5 secondes. (cela aurait aussi ete le cas avec `./pipex infile "sleep 3" "sleep 5" outfile`)
 
-#### Commandes vides
-- `./pipex infile "" " " outfile`
-
-
-Risque de segfault dans les process si ce cas n'est pas geré, `execve` est probablement la source du probleme.
+Il y en a d'autres, je vous laisserai les découvrir par vous meme. Je recommande grandement de faire joujou avec : [Outils interactifs](#outils-interactifs).
 
 ---
 
