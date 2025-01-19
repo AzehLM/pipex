@@ -133,7 +133,7 @@ Lorsqu'un processus est exécuté par l'OS, il possède une "image" en mémoire.
 ---
 
 ## Pipe et pourquoi close les fds
-### `pipe()`
+`pipe()`
 - [Manpage `pipe()`](https://linux.die.net/man/2/pipe)
 - La fonction `pipe()` crée un pipeline (buffer, voir suite) de communication unidirectionnel entre processus.
 #### Data flow : `write end -> buffer -> read end`
