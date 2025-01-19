@@ -62,8 +62,6 @@ void	exec_cmd(char *av, char **env)
 		free(path);
 		exit_error(ERR_EXECVE);
 	}
-	free(path);
-	free_data(cmd);
 }
 
 void	child(char **av, char **env, int *fd)
