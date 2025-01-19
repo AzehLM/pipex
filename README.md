@@ -1,8 +1,15 @@
+# Pipex
+
+*This project will let you discover in detail a UNIX mechanism that you already know
+by using it in your program.*
+
+---
+
 # Ressources pour le projet Pipex (42)
 
-# Table des matières
+### Table des matières
 1. [Références YouTube](#références-youtube)
-2. [Ressources globales C](#autres-références)
+2. [Autres références](#autres-références)
 3. [Outils interactifs](#outils-interactifs)
 4. [Ressources spécifiques au projet Pipex](#ressources-spécifiques-au-projet-pipex)
 5. [Le type pid_t](#le-type-pid_t)
@@ -19,6 +26,8 @@
 16. [Autres ressources](#autres-ressources)
 17. [Infodump](#infodump)
 
+---
+
 ## References YouTube
 - [CodeVault Playlist (Notions importantes pour le projet et plus)](https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY)
 - [Autre vidéo sur les pipelines](https://www.youtube.com/watch?v=QD9YKSg3wCc&list=PLK4FY1IoDcHG-jUt93Cl7n7XLQDZ0q7Tv)
@@ -32,7 +41,7 @@
 - [Gestion des erreurs en C avec `errno`](https://www.codequoi.com/errno-et-la-gestion-derreur-en-c/)
 - [Création et gestion des processus fils en C](https://www.codequoi.com/creer-et-tuer-des-processus-fils-en-c/)
 
-### Outils interactifs
+## Outils interactifs
 
 [Explainshell : explication des commandes shell](https://explainshell.com/explain?cmd=cat+%7C+cat+%7C+ls)
 
