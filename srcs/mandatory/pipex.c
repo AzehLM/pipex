@@ -64,7 +64,7 @@ void	exec_cmd(char *av, char **env)
 	}
 }
 
-void	child(char **av, char **env, int *fd)
+void	first_child(char **av, char **env, int *fd)
 {
 	int	infile;
 
@@ -89,7 +89,7 @@ void	child(char **av, char **env, int *fd)
 	exec_cmd(av[2], env);
 }
 
-void	parent(char **av, char **env, int *fd)
+void	second_child(char **av, char **env, int *fd)
 {
 	int	outfile;
 
@@ -127,13 +127,13 @@ int	main(int ac, char **av, char **env)
 	if (pid == -1)
 		exit_error(ERR_FORK);
 	if (pid == 0)
-		child(av, env, fd);
+		first_child(av, env, fd);
 	close(fd[1]);
 	pid = fork();
 	if (pid == -1)
 		exit_error(ERR_FORK);
 	if (pid == 0)
-		parent(av, env, fd);
+		second_child(av, env, fd);
 	close(fd[0]);
 	return (waiting(pid, 0, 0));
 }
