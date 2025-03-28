@@ -222,21 +222,11 @@ Plusieurs options:
 - avec `fsanitize` : compiler avec `-g -fsanitize=address`
 
 Neanmoins, l'utilisation d'`execve` pertube la detection de leaks puisque les images des processus sont redefinis.
-Bien penser a mettre en commentaire les parties ou `execve` est utilisé.
 Pour débuguer correctement, voici les options que j'ai utilisé avec valgrind :
 - `--leak-check=full --show-leak-kinds=all --track-origins=yes --show-mismatched-frees=yes --track-fds=yes --trace-children=yes`
 ---
 
-## Autres ressources
-
-### Garbage Collector
-Pas sûr si c'est nécessaire pour le projet, mais voici quelques ressources :
-- [Écrire un simple Garbage Collector en C](https://maplant.com/2020-04-25-Writing-a-Simple-Garbage-Collector-in-C.html)
-- [BDWGC : Garbage Collector pour C](https://github.com/ivmai/bdwgc)
-
----
-
-### List symbols from object files `nm`
+### List symbols from object files **`nm`** (`nm -u`)
 Option `-u` utile pour voir la liste des symboles.
 - GNU extension affiche une seule fois chaque symbole de chaque type en cours d'utilisation
 
@@ -245,7 +235,3 @@ Option `-u` utile pour voir la liste des symboles.
 ## Infodump
 
  [Tutoriel sur les compilateurs](https://ruslanspivak.com/lsbasi-part1/)
-
-
-#### Norme ANSI
-[Guide des règles de programmation sécurisées en C (ANSSI)](https://cyber.gouv.fr/sites/default/files/2020/07/anssi-guide-regles_de_programmation_pour_le_developpement_securise_de_logiciels_en_langage_c-v1.4.pdf)
