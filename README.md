@@ -65,7 +65,7 @@ by using it in your program.*
 
 ## Outils interactifs
 
-[Explainshell : explication des commandes shell](https://explainshell.com/explain?cmd=cat+%7C+cat+%7C+ls)
+- [Explainshell : explication des commandes shell](https://explainshell.com/explain?cmd=cat+%7C+cat+%7C+ls)
 
 ---
 
